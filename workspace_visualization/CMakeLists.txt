@@ -3,9 +3,30 @@ project(workspace_visualization)
 
 find_package(catkin REQUIRED COMPONENTS
     rviz
-    map_creator
+    visualization_msgs
+  roscpp
+  message_generation
+  geometry_msgs
+  std_msgs
+  tf2
+  rviz_visual_tools
+  pcl_ros
 )
-catkin_package(INCLUDE_DIRS  )
+
+add_message_files(
+ FILES
+ WsSphere.msg
+ WorkSpace.msg 
+)
+
+generate_messages(
+ DEPENDENCIES
+ geometry_msgs std_msgs
+)
+
+catkin_package(INCLUDE_DIRS 
+CATKIN_DEPENDS message_runtime )
+
 include_directories(include ${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
@@ -25,12 +46,9 @@ endif()
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-set(SRC_FILES
+set(SRC_FILES ## TODO uncomment of both cpp files needed then it compile the messages, then the package have to be built again with the src files
   src/reachability_map_visual.cpp
-  src/reachability_map_display.cpp
-  src/capability_map_visual.cpp
-  src/capability_map_display.cpp
-  
+  src/reachability_map_display.cpp 
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
